@@ -1,30 +1,23 @@
 import pathlib
-import datetime
-import time
-import glob
-import os
 import multiprocessing
-from classes.target import Target
+import csv
 from classes.target import TargetDiv
 from classes.target import TargetFile
 
-
-file_list = []
-
-
-def convert_date(timestamp):
-    d = datetime.datetime.utcfromtimestamp(timestamp)
-    formated_date = d.strftime('%d %b %Y')
-    return formated_date
-
+#getting the root directory path
 folPath = r'C:\Windows'
 path = pathlib.Path(folPath)
 
+
 if __name__ == "__main__":
+    #shared array
     manager = multiprocessing.Manager()
     return_list = manager.list()
+
+    #array that will hold all the processes
     process_array = []
 
+    #adding to the search list all the desired search criterias as classes
     search_list = [TargetDiv(pathlib.Path(folPath), 'addins'), TargetDiv(pathlib.Path(folPath), '*ERRORREP*'),
                    TargetDiv(pathlib.Path(folPath), '*GNOFF'), TargetDiv(pathlib.Path(folPath), '*QHE*'),
                    TargetFile(pathlib.Path(folPath), '*XT.ec*'), TargetFile(pathlib.Path(folPath), '*ACGenral*'),
@@ -40,6 +33,12 @@ if __name__ == "__main__":
     for p in process_array:
         p.join()
 
-    for file in return_list:
-        print(file['name'], file['path'], file['mdate'])
+    #creating the csv file from the final list
+    with open('file_assignment.csv', 'w') as new_file:
+        fieldnames = ['<FolderPath>', '<FileName>', '<CreationDate>', '<ModifiedDate>', '<DateAccessed>']
+        csv_writer = csv.DictWriter(new_file, fieldnames=fieldnames, delimiter='\t')
+        csv_writer.writeheader()
+
+        for file in return_list:
+            csv_writer.writerow(file)
 
