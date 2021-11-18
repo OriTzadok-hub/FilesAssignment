@@ -20,7 +20,7 @@ class Target:
         return formated_date
 
 
-class TargetDiv(Target):
+class TargetDir(Target):
     def find_target(self, return_list):
         for p in self.starting_path.rglob(self.search_criteria):
             if p.is_dir():

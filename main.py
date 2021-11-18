@@ -1,7 +1,7 @@
 import pathlib
 import multiprocessing
 import csv
-from classes.target import TargetDiv
+from classes.target import TargetDir
 from classes.target import TargetFile
 
 #getting the root directory path
@@ -18,8 +18,8 @@ if __name__ == "__main__":
     process_array = []
 
     #adding to the search list all the desired search criterias as classes
-    search_list = [TargetDiv(pathlib.Path(folPath), 'addins'), TargetDiv(pathlib.Path(folPath), '*ERRORREP*'),
-                   TargetDiv(pathlib.Path(folPath), '*GNOFF'), TargetDiv(pathlib.Path(folPath), '*QHE*'),
+    search_list = [TargetDir(pathlib.Path(folPath), 'addins'), TargetDir(pathlib.Path(folPath), '*ERRORREP*'),
+                   TargetDir(pathlib.Path(folPath), '*GNOFF'), TargetDir(pathlib.Path(folPath), '*QHE*'),
                    TargetFile(pathlib.Path(folPath), '*XT.ec*'), TargetFile(pathlib.Path(folPath), '*ACGenral*'),
                    TargetFile(pathlib.Path(folPath), '*.sdb')]
 
